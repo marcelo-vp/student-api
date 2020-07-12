@@ -1,6 +1,10 @@
+## Setting up the environment
+### Create a virtualenv
+    mkvirtualenv student-api -p python3
+### Install dependencies
+    make requirements
+
 ## To Do
-- create virtual environment with python 3
-- install dependencies
 - create student model with schema
 - configure MySQL ORM for Python
 - add command to create DB and add student table
