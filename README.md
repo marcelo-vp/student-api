@@ -13,7 +13,6 @@ The app will require a `MySQL` server with the following base settings:
     make database-connection
 
 ## To Do
-- add Flask app with test route
 - add POST, GET (list), GET(filter), PATCH and DELETE routes and views
 
 - **create docker to abstract services from OS**
