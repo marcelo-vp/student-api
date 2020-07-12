@@ -35,8 +35,6 @@ class Student(Base):
     complement = Column(String(200))
 
 
-db_connector = Connector()
-db_connector.connect()
 engine = create_engine(f'{DB_URL}/{DB_NAME}')
 Base.metadata.create_all(engine)
 
