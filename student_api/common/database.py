@@ -10,6 +10,9 @@ from sqlalchemy import (
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker
 
+from student_api.common.connector import Connector
+from student_api.constants import DB_NAME, DB_URL
+
 
 Base = declarative_base()
 
@@ -37,10 +40,12 @@ class Address(Base):
     street_number = Column(Integer)
     complement = Column(String(250))
     student = relationship(Student)
-    student_id = Column(Integer, ForeignKey('student.id'))
+    student_id = Column(Integer, ForeignKey('students.id'))
 
 
-engine = create_engine('mysql://root@127.0.0.1:3306/school')
+db_connector = Connector()
+db_connector.connect()
+engine = create_engine(f'{DB_URL}/{DB_NAME}')
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)

@@ -5,7 +5,6 @@
     make requirements
 
 ## To Do
-- configure MySQL ORM for Python
 - add Flask app with test route
 - add POST, GET (list), GET(filter), PATCH and DELETE routes and views
 
