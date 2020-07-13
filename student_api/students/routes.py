@@ -1,4 +1,4 @@
-from student_api import app
+from student_api.server import app
 
 
 @app.route('/')
