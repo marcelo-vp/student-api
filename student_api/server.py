@@ -2,7 +2,8 @@ from flask import Flask
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from student_api.constants import DB_NAME, DB_URL
+from student_api.constants import DB_NAME
+from student_api.settings import DB_URL
 from student_api.students.models import tables
 
 
