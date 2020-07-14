@@ -17,6 +17,26 @@ You can export each of these variables or add them to a `.env` file.
 ### 5. Run app locally
     make run mode=development
 
+## API specs
+### Endpoints
+- `/student/` -- `POST`, `GET` *(accepts query params)*
+- `/student/{id}/` -- `PATCH`, `DELETE`
+### Schema
+```
+{
+    'first_name': 'First Name',
+    'last_name': 'Last Name',
+    'age': 10,
+    'responsible_adult': 'Adult Name',
+    'school_grade': 'First',
+    'zip_code': '12345678',
+    'street_name': 'Street name',
+    'street_number': 100,
+    'complement': 'apt 11'
+}
+```
+
 ## To Do
-- **create docker to abstract services from OS**
-- **add cache**
+- add Swagger
+- create docker to abstract services from OS
+- add cache
