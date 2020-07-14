@@ -16,7 +16,5 @@ You can export each of these variables or add them to a `.env` file.
     make database-connection
 
 ## To Do
-- add POST, GET (list), GET(filter), PATCH and DELETE routes and views
-
 - **create docker to abstract services from OS**
 - **add cache**

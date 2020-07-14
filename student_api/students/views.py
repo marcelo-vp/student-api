@@ -60,5 +60,14 @@ class StudentView:
         return content, status_code
 
     @classmethod
-    def delete(cls):
-        pass
+    def delete(cls, student_id):
+        content = {}
+
+        try:
+            content = cls.model().delete(student_id)
+            status_code = 200
+        except PreConditionFailed as e:
+            logger.error(e.message)
+            status_code = e.status_code
+
+        return content, status_code

@@ -37,6 +37,12 @@ class Student(Base, DatabaseMixin):
     street_number = Column(Integer, nullable=False)
     complement = Column(String(200))
 
+    def _find_student(self, student_id):
+        try:
+            return self.session.query(Student).filter_by(id=student_id).one()
+        except Exception:
+            raise PreConditionFailed('Student does not exist.')
+
     def add(self):
         if self._has_existing_record(
             Student,
@@ -49,7 +55,6 @@ class Student(Base, DatabaseMixin):
         self.session.add(self)
         self.session.commit()
         user['id'] = self.id
-
         return user
 
     def list_(self, params):
@@ -60,15 +65,19 @@ class Student(Base, DatabaseMixin):
         return students
 
     def patch(self, student_id, data):
-        try:
-            student = self.session.query(Student).filter_by(id=student_id).one()
-        except Exception:
-            raise PreConditionFailed('Student does not exist.')
+        student = self._find_student(student_id)
 
         for key, value in data.items():
             setattr(student, key, value)
 
         response = student._to_dict()
+        self.session.commit()
+        return response
+
+    def delete(self, student_id):
+        student = self._find_student(student_id)
+        response = student._to_dict()
+        self.session.delete(student)
         self.session.commit()
         return response
 

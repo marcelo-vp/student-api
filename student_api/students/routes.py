@@ -19,3 +19,5 @@ def handle_filter_and_create():
 def handle_update_and_remove(student_id):
     if request.method == 'PATCH':
         return StudentView.patch(student_id, request.json)
+    if request.method == 'DELETE':
+        return StudentView.delete(student_id)
