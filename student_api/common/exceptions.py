@@ -4,6 +4,6 @@ class Error(Exception):
 
 class PreConditionFailed(Error):
 
-    def __init__(self):
-        self.message = 'Precondition failed: student already exists.'
+    def __init__(self, message):
+        self.message = message
         self.status_code = 412

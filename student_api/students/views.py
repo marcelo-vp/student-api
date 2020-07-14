@@ -42,8 +42,22 @@ class StudentView:
         return {'students': students}, 200
 
     @classmethod
-    def patch(cls):
-        pass
+    def patch(cls, student_id, data):
+        content = {}
+
+        try:
+            content = cls.model().patch(student_id, data)
+            status_code = 200
+        except PreConditionFailed as e:
+            logger.error(e.message)
+            status_code = e.status_code
+        except Exception as e:
+            logger.error(
+                f'Server error while updating a student: {e}'
+            )
+            status_code = 500
+
+        return content, status_code
 
     @classmethod
     def delete(cls):

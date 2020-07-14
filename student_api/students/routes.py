@@ -15,6 +15,7 @@ def handle_filter_and_create():
     if request.method == 'POST':
         return StudentView.post(request.json)
 
-@app.route('/student/{id}/', methods=['PATCH', 'DELETE'])
-def handle_update_and_remove():
-    pass
+@app.route('/student/<student_id>/', methods=['PATCH', 'DELETE'])
+def handle_update_and_remove(student_id):
+    if request.method == 'PATCH':
+        return StudentView.patch(student_id, request.json)

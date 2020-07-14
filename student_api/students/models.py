@@ -13,6 +13,19 @@ class DatabaseMixin:
     def session(self):
         return self._session
 
+    def _to_dict(self):
+        instance_dict = self.__dict__.copy()
+        del instance_dict['_sa_instance_state']
+        return instance_dict
+
+    def _has_existing_record(self, model):
+        existing_record = self.session.query(model).filter_by(
+            first_name=self.first_name,
+            last_name=self.last_name
+        ).first()
+
+        return True if existing_record else False
+
 
 class Student(Base, DatabaseMixin):
     __tablename__  = 'students'
@@ -28,24 +41,9 @@ class Student(Base, DatabaseMixin):
     street_number = Column(Integer, nullable=False)
     complement = Column(String(200))
 
-    def _to_dict(self):
-        student_dict = self.__dict__.copy()
-        del student_dict['_sa_instance_state']
-        return student_dict
-
-    def _check_existing_student(self):
-        existing_student = self.session.query(Student).filter_by(
-            first_name=self.first_name,
-            last_name=self.last_name
-        ).first()
-
-        if existing_student:
-            raise PreConditionFailed
-
-        return
-
     def add(self):
-        self._check_existing_student()
+        if self._has_existing_record(Student):
+            raise PreConditionFailed('Student already exists.')
 
         user = self._to_dict()
         self.session.add(self)
@@ -60,5 +58,18 @@ class Student(Base, DatabaseMixin):
             for student_instance in self.session.query(Student).filter_by(**params)
         ]
         return students
+
+    def patch(self, student_id, data):
+        try:
+            student = self.session.query(Student).filter_by(id=student_id).one()
+        except Exception:
+            raise PreConditionFailed('Student does not exist.')
+
+        for key, value in data.items():
+            setattr(student, key, value)
+
+        response = student._to_dict()
+        self.session.commit()
+        return response
 
 tables = Base.metadata
