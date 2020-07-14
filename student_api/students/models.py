@@ -18,12 +18,8 @@ class DatabaseMixin:
         del instance_dict['_sa_instance_state']
         return instance_dict
 
-    def _has_existing_record(self, model):
-        existing_record = self.session.query(model).filter_by(
-            first_name=self.first_name,
-            last_name=self.last_name
-        ).first()
-
+    def _has_existing_record(self, model, **kwargs):
+        existing_record = self.session.query(model).filter_by(**kwargs).first()
         return True if existing_record else False
 
 
@@ -42,7 +38,11 @@ class Student(Base, DatabaseMixin):
     complement = Column(String(200))
 
     def add(self):
-        if self._has_existing_record(Student):
+        if self._has_existing_record(
+            Student,
+            first_name=self.first_name,
+            last_name=self.last_name
+        ):
             raise PreConditionFailed('Student already exists.')
 
         user = self._to_dict()
