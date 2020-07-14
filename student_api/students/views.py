@@ -20,7 +20,7 @@ class StudentView:
             user = cls.model(**data)
             content = user.add()
             status_code = 201
-        except KeyError as e:
+        except TypeError as e:
             logger.error(
                 f'Bad request while creating a student: {e}'
             )
