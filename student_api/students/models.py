@@ -1,3 +1,5 @@
+from student_api.common.exceptions import PreConditionFailed
+
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -8,11 +10,11 @@ Base = declarative_base()
 class DatabaseMixin:
 
     @property
-    def db_session(self):
-        return self.session
+    def session(self):
+        return self._session
 
 
-class StudentModel(Base, DatabaseMixin):
+class Student(Base, DatabaseMixin):
     __tablename__  = 'students'
 
     id = Column(Integer, primary_key=True)
@@ -27,18 +29,29 @@ class StudentModel(Base, DatabaseMixin):
     complement = Column(String(200))
 
     def _to_dict(self):
-        user_dict = self.__dict__.copy()
-        del user_dict['_sa_instance_state']
-        return user_dict
+        student_dict = self.__dict__.copy()
+        del student_dict['_sa_instance_state']
+        return student_dict
 
-    def _check_existing_user(self):
-        pass
+    def _check_existing_student(self):
+        existing_student = self.session.query(Student).filter_by(
+            first_name=self.first_name,
+            last_name=self.last_name
+        ).first()
+
+        if existing_student:
+            raise PreConditionFailed
+
+        return
 
     def add(self):
+        self._check_existing_student()
+
         user = self._to_dict()
-        self.db_session.add(self)
-        self.db_session.commit()
+        self.session.add(self)
+        self.session.commit()
         user['id'] = self.id
+
         return user
 
 tables = Base.metadata

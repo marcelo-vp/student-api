@@ -1,7 +1,8 @@
 from datetime import datetime
 import logging
 
-from student_api.students.models import StudentModel
+from student_api.common.exceptions import PreConditionFailed
+from student_api.students.models import Student
 
 
 logger = logging.getLogger(__name__)
@@ -9,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class StudentView:
 
-    model = StudentModel
+    model = Student
 
     @classmethod
     def post(cls, data):
@@ -24,6 +25,9 @@ class StudentView:
                 f'Bad request while creating a student: {e}'
             )
             status_code = 400
+        except PreConditionFailed as e:
+            logger.error(e.message)
+            status_code = e.status_code
         except Exception as e:
             logger.error(
                 f'Server error while creating a student: {e}'
