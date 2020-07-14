@@ -10,6 +10,8 @@ def index():
 
 @app.route('/student/', methods=['GET', 'POST'])
 def handle_filter_and_create():
+    if request.method == 'GET':
+        return StudentView.list_(request.args)
     if request.method == 'POST':
         return StudentView.post(request.json)
 

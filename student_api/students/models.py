@@ -54,4 +54,11 @@ class Student(Base, DatabaseMixin):
 
         return user
 
+    def list_(self, params):
+        students = [
+            student_instance._to_dict()
+            for student_instance in self.session.query(Student).filter_by(**params)
+        ]
+        return students
+
 tables = Base.metadata

@@ -37,8 +37,9 @@ class StudentView:
         return content, status_code
 
     @classmethod
-    def _list(cls):
-        pass
+    def list_(cls, query_params):
+        students = cls.model().list_(query_params.to_dict())
+        return {'students': students}, 200
 
     @classmethod
     def patch(cls):
