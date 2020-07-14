@@ -14,6 +14,8 @@ You can export each of these variables or add them to a `.env` file.
     make requirements
 ### 4. Connect to database
     make database-connection
+### 5. Run app locally
+    make run mode=development
 
 ## To Do
 - **create docker to abstract services from OS**
