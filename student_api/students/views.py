@@ -1,6 +1,8 @@
 from datetime import datetime
 import logging
 
+from sqlalchemy.exc import OperationalError
+
 from student_api.common.exceptions import PreConditionFailed
 from student_api.students.models import Student
 
@@ -19,9 +21,9 @@ class StudentView:
         try:
             content = cls.model.add(data)
             status_code = 201
-        except TypeError as e:
+        except OperationalError as e:
             logger.error(
-                f'Bad request while creating a student: {e}'
+                f'Bad request while creating a student. {e.orig.args[1]}'
             )
             status_code = 400
         except PreConditionFailed as e:
@@ -47,6 +49,11 @@ class StudentView:
         try:
             content = cls.model.patch(student_id, data)
             status_code = 200
+        except OperationalError as e:
+            logger.error(
+                f'Bad request while creating a student. {e.orig.args[1]}'
+            )
+            status_code = 400
         except PreConditionFailed as e:
             logger.error(e.message)
             status_code = e.status_code

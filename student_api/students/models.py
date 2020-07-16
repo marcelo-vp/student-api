@@ -22,6 +22,7 @@ class DatabaseMixin:
 
 
 class Student(Base, DatabaseMixin):
+
     __tablename__  = 'students'
 
     id = Column(Integer, primary_key=True)
@@ -86,4 +87,4 @@ class Student(Base, DatabaseMixin):
         cls.session.commit()
         return student_dict
 
-tables = Base.metadata
+metadata = Base.metadata

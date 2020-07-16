@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 from student_api.constants import DB_NAME
 from student_api.settings import DB_URL
-from student_api.students.models import tables, DatabaseMixin
+from student_api.students.models import DatabaseMixin, metadata
 
 
 class Server(Flask):
@@ -15,7 +15,7 @@ class Server(Flask):
 
     def __init_database(self):
         engine = create_engine(f'{DB_URL}/{DB_NAME}')
-        tables.create_all(engine)
+        metadata.create_all(engine)
 
         Session = sessionmaker(bind=engine)
         DatabaseMixin.session = Session()
