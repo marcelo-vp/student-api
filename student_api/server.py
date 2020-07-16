@@ -18,7 +18,7 @@ class Server(Flask):
         tables.create_all(engine)
 
         Session = sessionmaker(bind=engine)
-        DatabaseMixin._session = Session()
+        DatabaseMixin.session = Session()
 
 
 app = Server('student_api')

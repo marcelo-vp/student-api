@@ -17,8 +17,7 @@ class StudentView:
         content = {}
 
         try:
-            user = cls.model(**data)
-            content = user.add()
+            content = cls.model.add(data)
             status_code = 201
         except TypeError as e:
             logger.error(
@@ -38,7 +37,7 @@ class StudentView:
 
     @classmethod
     def list_(cls, query_params):
-        students = cls.model().list_(query_params.to_dict())
+        students = cls.model.list_(query_params.to_dict())
         return {'students': students}, 200
 
     @classmethod
@@ -46,7 +45,7 @@ class StudentView:
         content = {}
 
         try:
-            content = cls.model().patch(student_id, data)
+            content = cls.model.patch(student_id, data)
             status_code = 200
         except PreConditionFailed as e:
             logger.error(e.message)
@@ -64,7 +63,7 @@ class StudentView:
         content = {}
 
         try:
-            content = cls.model().delete(student_id)
+            content = cls.model.delete(student_id)
             status_code = 200
         except PreConditionFailed as e:
             logger.error(e.message)

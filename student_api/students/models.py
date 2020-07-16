@@ -9,17 +9,15 @@ Base = declarative_base()
 
 class DatabaseMixin:
 
-    @property
-    def session(self):
-        return self._session
-
-    def _to_dict(self):
-        instance_dict = self.__dict__.copy()
+    @classmethod
+    def _to_dict(cls, instance):
+        instance_dict = instance.__dict__.copy()
         del instance_dict['_sa_instance_state']
         return instance_dict
 
-    def _has_existing_record(self, model, **kwargs):
-        existing_record = self.session.query(model).filter_by(**kwargs).first()
+    @classmethod
+    def _has_existing_record(cls, model, **kwargs):
+        existing_record = cls.session.query(model).filter_by(**kwargs).first()
         return True if existing_record else False
 
 
@@ -37,48 +35,55 @@ class Student(Base, DatabaseMixin):
     street_number = Column(Integer, nullable=False)
     complement = Column(String(200))
 
-    def _find_student(self, student_id):
+    @classmethod
+    def _find_student(cls, student_id):
         try:
-            return self.session.query(Student).filter_by(id=student_id).one()
+            return cls.session.query(Student).filter_by(id=student_id).one()
         except Exception:
             raise PreConditionFailed('Student does not exist.')
 
-    def add(self):
-        if self._has_existing_record(
+    @classmethod
+    def add(cls, data):
+        new_student = cls(**data)
+
+        if cls._has_existing_record(
             Student,
-            first_name=self.first_name,
-            last_name=self.last_name
+            first_name=new_student.first_name,
+            last_name=new_student.last_name
         ):
             raise PreConditionFailed('Student already exists.')
 
-        user = self._to_dict()
-        self.session.add(self)
-        self.session.commit()
-        user['id'] = self.id
-        return user
+        student_dict = cls._to_dict(new_student)
+        cls.session.add(new_student)
+        cls.session.commit()
+        student_dict['id'] = new_student.id
+        return student_dict
 
-    def list_(self, params):
+    @classmethod
+    def list_(cls, params):
         students = [
-            student_instance._to_dict()
-            for student_instance in self.session.query(Student).filter_by(**params)
+            cls._to_dict(student_instance)
+            for student_instance in cls.session.query(Student).filter_by(**params)
         ]
         return students
 
-    def patch(self, student_id, data):
-        student = self._find_student(student_id)
+    @classmethod
+    def patch(cls, student_id, data):
+        student = cls._find_student(student_id)
 
         for key, value in data.items():
             setattr(student, key, value)
 
-        response = student._to_dict()
-        self.session.commit()
-        return response
+        student_dict = cls._to_dict(student)
+        cls.session.commit()
+        return student_dict
 
-    def delete(self, student_id):
-        student = self._find_student(student_id)
-        response = student._to_dict()
-        self.session.delete(student)
-        self.session.commit()
-        return response
+    @classmethod
+    def delete(cls, student_id):
+        student = cls._find_student(student_id)
+        student_dict = cls._to_dict(student)
+        cls.session.delete(student)
+        cls.session.commit()
+        return student_dict
 
 tables = Base.metadata
