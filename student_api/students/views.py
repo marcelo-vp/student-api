@@ -39,8 +39,14 @@ class StudentView:
 
     @classmethod
     def list_(cls, query_params):
-        students = cls.model.list_(query_params.to_dict())
-        return {'students': students}, 200
+        try:
+            students = cls.model.list_(query_params.to_dict())
+            return {'students': students}, 200
+        except Exception as e:
+            logger.error(
+                f'Server error while updating a student: {e}'
+            )
+            return {}, 500
 
     @classmethod
     def patch(cls, student_id, data):
@@ -75,5 +81,10 @@ class StudentView:
         except PreConditionFailed as e:
             logger.error(e.message)
             status_code = e.status_code
+        except Exception as e:
+            logger.error(
+                f'Server error while updating a student: {e}'
+            )
+            status_code = 500
 
         return content, status_code
