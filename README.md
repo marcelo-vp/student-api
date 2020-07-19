@@ -1,3 +1,11 @@
+# Student API
+
+![Python](https://img.shields.io/badge/python-3.7.7-blue)&nbsp;
+![Flask](https://img.shields.io/badge/flask-1.1.2-blue)&nbsp;
+![Werkzeug](https://img.shields.io/badge/werkzeug-1.0.1-yellow)&nbsp;
+
+Rest API written in Python, on top of Flask and Werkzeug.
+
 ## Setting up the environment
 ### 1. Provide the services
 The app will require a SQL-based server: `MySQL`, `PostgreSQL` or `SQLite`. The type of dialect and database configuration can be set through environment variables:
