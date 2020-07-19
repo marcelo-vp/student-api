@@ -1,0 +1,157 @@
+openapi: 3.0.0
+info:
+  title: Student API
+  description: Student API with Flask and MySQL
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:5000
+    description: Development server
+
+paths:
+  /student/:
+    post:
+      tags:
+        - students
+      summary: Create a new student
+      description: Creates a new student record
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        201:
+          description: Created
+        400:
+          description: Bad request
+        412:
+          description: Precondition failed
+        500:
+          description: Internal server error
+    get:
+      tags:
+        - students
+      summary: Get students
+      description: Retrieves students from school
+      parameters:
+        - name: first_name
+          in: query
+          description: student's first name
+          type: string
+          required: false
+        - name: last_name
+          in: query
+          description: student's last name
+          type: string
+          required: false
+        - name: age
+          in: query
+          description: student's age
+          type: string
+          required: false
+        - name: school_grade
+          in: query
+          description: school grade
+          type: string
+          required: false
+      responses:
+        200:
+          description: OK
+        500:
+          description: Internal server error
+  /student/{id}/:
+    patch:
+      tags:
+        - students
+      summary: Update a student
+      description: Updates a student record
+      parameters:
+        - name: id
+          in: path
+          description: student id
+          type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        200:
+          description: OK
+        400:
+          description: Bad request
+        412:
+          description: Precondition failed
+        500:
+          description: Intenal server error
+    delete:
+      tags:
+        - students
+      summary: Delete a student
+      description: Deletes a student record
+      parameters:
+        - name: id
+          in: path
+          description: student id
+          type: string
+          required: true
+      responses:
+        200:
+          description: OK
+        412:
+          description: Precondition failed
+        500:
+          description: Internal server error
+
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: A student's first name
+        last_name:
+          type: string
+          description: A student's last name
+        age:
+          type: number
+          description: A student's age
+        responsible_adult:
+          type: string
+          description: A responsible adult
+        school_grade:
+          type: string
+          description: Current school grade
+        zip_code:
+          type: string
+          description: Address ZIP code
+        street_name:
+          type: string
+          description: Address street or avenue
+        street_number:
+          type: number
+          description: Address number
+        complement:
+          type: string
+          description: Address complement
+      example:
+        first_name: Vince
+        last_name: Vaughn
+        age: 12
+        responsible_adult: Owen Wilson
+        school_grade: Second year
+        zip_code: 66677-888
+        street_name: Crashers' street
+        street_number: 999
+        complement: apartment 1000
+      required:
+        - first_name
+        - last_name
+        - age
+        - responsible_adult
+        - zip_code
+        - street_name
+        - street_number

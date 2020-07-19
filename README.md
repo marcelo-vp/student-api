@@ -21,6 +21,5 @@ You can export each of these variables or add them to a `.env` file.
     http://localhost:5000/docs/
 
 ## To Do
-- add Swagger
 - create docker to abstract services from OS
 - add cache
