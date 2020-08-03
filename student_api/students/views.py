@@ -44,7 +44,7 @@ class StudentView:
             return {'students': students}, 200
         except Exception as e:
             logger.error(
-                f'Server error while updating a student: {e}'
+                f'Server error while listing students: {e}'
             )
             return {}, 500
 
@@ -57,7 +57,7 @@ class StudentView:
             status_code = 200
         except OperationalError as e:
             logger.error(
-                f'Bad request while creating a student. {e.orig.args[1]}'
+                f'Bad request while updating a student. {e.orig.args[1]}'
             )
             status_code = 400
         except PreConditionFailed as e:
@@ -83,7 +83,7 @@ class StudentView:
             status_code = e.status_code
         except Exception as e:
             logger.error(
-                f'Server error while updating a student: {e}'
+                f'Server error while deleting a student: {e}'
             )
             status_code = 500
 
