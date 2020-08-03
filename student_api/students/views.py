@@ -3,7 +3,7 @@ import logging
 
 from sqlalchemy.exc import OperationalError
 
-from student_api.common.exceptions import PreConditionFailed
+from student_api.common.exceptions import Conflict, NotFound
 from student_api.students.models import Student
 
 
@@ -26,7 +26,7 @@ class StudentView:
                 f'Bad request while creating a student. {e.orig.args[1]}'
             )
             status_code = 400
-        except PreConditionFailed as e:
+        except Conflict as e:
             logger.error(e.message)
             status_code = e.status_code
         except Exception as e:
@@ -60,7 +60,7 @@ class StudentView:
                 f'Bad request while updating a student. {e.orig.args[1]}'
             )
             status_code = 400
-        except PreConditionFailed as e:
+        except NotFound as e:
             logger.error(e.message)
             status_code = e.status_code
         except Exception as e:
@@ -78,7 +78,7 @@ class StudentView:
         try:
             content = cls.model.delete(student_id)
             status_code = 200
-        except PreConditionFailed as e:
+        except NotFound as e:
             logger.error(e.message)
             status_code = e.status_code
         except Exception as e:

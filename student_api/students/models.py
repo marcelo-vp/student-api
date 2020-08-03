@@ -1,4 +1,4 @@
-from student_api.common.exceptions import PreConditionFailed
+from student_api.common.exceptions import Conflict, NotFound
 
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
@@ -41,7 +41,7 @@ class Student(Base, DatabaseMixin):
         try:
             return cls.session.query(Student).filter_by(id=student_id).one()
         except Exception:
-            raise PreConditionFailed('Student does not exist.')
+            raise NotFound('Student does not exist.')
 
     @classmethod
     def add(cls, data):
@@ -52,7 +52,7 @@ class Student(Base, DatabaseMixin):
             first_name=new_student.first_name,
             last_name=new_student.last_name
         ):
-            raise PreConditionFailed('Student already exists.')
+            raise Conflict('Student already exists.')
 
         student_dict = cls._to_dict(new_student)
         cls.session.add(new_student)

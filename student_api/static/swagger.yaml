@@ -25,8 +25,8 @@ paths:
           description: Created
         400:
           description: Bad request
-        412:
-          description: Precondition failed
+        409:
+          description: Conflict
         500:
           description: Internal server error
     get:
@@ -82,8 +82,8 @@ paths:
           description: OK
         400:
           description: Bad request
-        412:
-          description: Precondition failed
+        404:
+          description: Not found
         500:
           description: Intenal server error
     delete:
@@ -100,8 +100,8 @@ paths:
       responses:
         200:
           description: OK
-        412:
-          description: Precondition failed
+        404:
+          description: Not found
         500:
           description: Internal server error
 
