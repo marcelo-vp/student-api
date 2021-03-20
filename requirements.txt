@@ -2,7 +2,7 @@ click==7.1.2
 Flask==1.1.2
 flask-swagger-ui==3.25.0
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 MarkupSafe==1.1.1
 mysql-connector-python==8.0.20
 mysqlclient==2.0.1
