@@ -6,7 +6,7 @@ Jinja2==2.11.2
 MarkupSafe==1.1.1
 mysql-connector-python==8.0.20
 mysqlclient==2.0.1
-protobuf==3.12.2
+protobuf==3.18.3
 python-dotenv==0.14.0
 PyYAML==5.3.1
 six==1.15.0
